@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نقشه راه ۵+۱ مرحله‌ای + پرامپت مرحله ۱ | هیئت ابولحسن</title>
+<style>
+  :root{
+    --ink:#1f2430; --muted:#5b6472; --line:#d8dde6; --bg:#f6f7fb;
+    --card:#ffffff; --accent:#0e5a8a; --accent-soft:#e3eff7;
+    --warn:#8a5a00; --warn-soft:#fdf3dc; --stop:#9c1f1f; --stop-soft:#fbe7e7;
+    --ok:#1f6b3a; --ok-soft:#e6f4ea;
+  }
+  *{box-sizing:border-box}
+  body{font-family:Tahoma,"Segoe UI",Arial,sans-serif; background:var(--bg); color:var(--ink);
+       margin:0; line-height:1.9; font-size:15px;}
+  .wrap{max-width:1000px; margin:0 auto; padding:24px 16px 80px;}
+  header{background:var(--accent); color:#fff; border-radius:14px; padding:24px 28px; margin-bottom:22px;}
+  header h1{margin:0 0 8px; font-size:24px}
+  header p{margin:0; opacity:.92}
+  nav{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 18px; margin-bottom:22px;}
+  nav a{color:var(--accent); text-decoration:none; margin-inline-start:14px; font-weight:bold; font-size:14px}
+  section{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 24px; margin-bottom:20px;}
+  h2{margin:0 0 14px; font-size:19px; color:var(--accent); border-inline-start:5px solid var(--accent); padding-inline-start:12px;}
+  h3{margin:16px 0 8px; font-size:16px}
+  table{width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:14px;}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:right; vertical-align:top;}
+  th{background:var(--accent-soft); color:var(--accent)}
+  ul,ol{padding-inline-start:22px; margin:6px 0}
+  li{margin-bottom:5px}
+  .meta{color:var(--muted); font-size:13px}
+  code{background:#eef1f6; border-radius:5px; padding:1px 7px; font-family:Consolas,monospace; font-size:13px; direction:ltr; display:inline-block}
+  .box{border-radius:10px; padding:12px 16px; margin:12px 0; border:1px solid var(--line)}
+  .box.warn{background:var(--warn-soft); border-color:#e8c877}
+  .box.stop{background:var(--stop-soft); border-color:#e2a3a3}
+  .box.ok{background:var(--ok-soft); border-color:#a8d5b5}
+  .prompt{background:#0f1420; color:#e8edf6; border-radius:12px; padding:20px 22px; margin:14px 0;
+          font-family:Consolas,monospace; font-size:13px; line-height:2.1; direction:rtl; white-space:pre-wrap; word-wrap:break-word;}
+  .prompt b{color:#ffd479}
+  .prompt .en{direction:ltr; display:inline-block; color:#8fd4ff}
+  .stamp{border:1px solid var(--line); border-radius:10px; padding:10px 16px; background:#fbfcfe; margin-bottom:20px; font-size:14px}
+  .copy{background:var(--accent-soft); border:1px dashed var(--accent); border-radius:10px; padding:12px 16px; margin:10px 0; font-weight:bold;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>نقشه راه اجرا (۵ مرحله + ۱ ذخیره) و پرامپت مرحله ۱</h1>
+  <p>دامنه: <b>heidarieh-abolhasan.ir</b> &nbsp;|&nbsp; سند مرجع: <code>Spec_01_Requirements.html</code> + <code>پاسخ به سوالات.docx</code> &nbsp;|&nbsp; مشاور: ۱۴۰۵/۰۸/۰۲</p>
+</header>
+
+<nav>
+  <a href="#decisions">الف. تصمیم‌های نهایی‌شده</a>
+  <a href="#roadmap">ب. نقشه راه</a>
+  <a href="#comms">ج. راه ارتباطی</a>
+  <a href="#prompt1">د. پرامپت مرحله ۱</a>
+  <a href="#gate">ه. معیار پذیرش</a>
+</nav>
+
+<div class="stamp"><b>وضعیت:</b> پرامپت مرحله ۱ آماده‌ی ارسال است. تا تأیید شما چیزی اجرا نمی‌شود و مرحله بعدی نوشته نمی‌شود.</div>
+
+<section id="decisions">
+<h2>الف. تصمیم‌های نهایی‌شده از فایل پاسخ به سوالات</h2>
+<table>
+  <tr><th>پرسش</th><th>تصمیم کارفرما</th><th>اثر فنی</th></tr>
+  <tr><td>پ۱ هزینه اقامت</td><td>پرداخت <b>الزامی در زمان رزرو قطعی</b></td><td>درگاه پرداخت در مسیر رزرو (مرحله ۳)؛ رزرو بدون پرداخت = فقط «قفسه‌ی انتظار» ۱۵ دقیقه‌ای</td></tr>
+  <tr><td>پ۲ رزرو زودتر از موعد</td><td>گزینه دوم: <b>فقط ثبت علاقه‌مندی، تأیید نهایی با مدیر</b></td><td>مدل <code>interest</code> جدا از <code>reservation</code>؛ قفل تاریخ ندارد</td></tr>
+  <tr><td>پ۳ نذورات</td><td><b>بدون لاگین</b> قابل واریز</td><td>درگاه نذورات کاملاً عمومی، بدون حساب کاربری</td></tr>
+  <tr><td>پ۴ ویدئو</td><td>میزبانی <b>داخلی</b>، پخش زنده <b>ندارد</b></td><td>آپلود فایل در میزبان + پلیکن HTML5؛ حذف هرگونه API استریم/آپارات از دامنه</td></tr>
+  <tr><td>پ۵ کد ملی</td><td><b>کد ملی الزامی</b>، مگر پروفایل کامل شده باشد (کد ملی بخشی از تکمیل پروفایل است)</td><td>یک قانون ساده: <code>profile_complete</code> ⇒ کد ملی معتبر ثبت‌شده دارد ⇒ رزرو آزاد؛ غیر آن ⇒ فرم تکمیل پروفایل (ق gate یکی، نه دو مسیر)</td></tr>
+  <tr><td>پ۶ دامنه</td><td><code>heidarieh-abolhasan.ir</code></td><td>in-dev بدون دامنه؛ کوکی‌ها با <code>localhost</code></td></tr>
+  <tr><td>پ۷ هدف مبلغ صندوق‌ها</td><td><b>نیاز نیست</b></td><td>حذف نوار پیشرفت مالی → سادگی پنل مالی</td></tr>
+  <tr><td>پ۸ نقشه</td><td>الگو در <code>Plan.html</code> (تصویر + SVG پلیگون با <code>data-name</code>، pan/zoom)؛ واحدها تیپ‌دار و در ۵ طبقه؛ باید تاریخ شمسی و رزروهای هر واحد نمایش داده شود</td><td>این فایل مرجع بازطراحی در React است (مرحله ۴)؛ <code>draw.html</code> ابزار کار شماست، وارد محصول نمی‌شود</td></tr>
+  <tr><td>پ۹ حجم آرشیو</td><td>نمونه‌ی حداقلی، بعداً تکمیل</td><td>seed با داده نمونه؛ ابزار import انبوه به مرحله ۶ موکول</td></tr>
+</table>
+</section>
+
+<section id="roadmap">
+<h2>ب. نقشه راه — نسخه اولیه کامل در ۵ مرحله (مرحله ۶ ذخیره/بهینه‌سازی)</h2>
+<table>
+  <tr><th>مرحله</th><th>عنوان</th><th>خروجی قابل مشاهده</th><th>وابستگی</th></tr>
+  <tr><td><b>۱</b></td><td>اسکلت + هویت</td><td>پروژه Next.js با layout RTL فارسی، فونت وزیرمتن، دیتابیس SQLite، ورود با OTP پیامکی (شبیه‌ساز in-dev)، نشست ماندگار ۳۰ روزه، مودال تکمیل پروفایل، گیت رزرو، shell پنل مدیریت با نقش‌ها</td><td>—</td></tr>
+  <tr><td><b>۲</b></td><td>محتوای عمومی</td><td>خانه، آرشیو صوت، آرشیو تصویر (+ آلبوم افراد قدیمی/مرحوم)، ویدئو، برنامه‌های جاری، مقالات + پنل CRUD محتوا + داده seed</td><td>۱</td></tr>
+  <tr><td><b>۳</b></td><td>موتور رزرو + مالی</td><td>مدل واحد/طبقه/تیپ/تعرفه، تقویم شمسی، جلوگیری از تضاد، رزرو قطعی با پرداخت درگاه، فاکتور، نذورات بدون لاگین، پنل مالی و چک‌این/چک‌اوت</td><td>۱ (و کلید تست درگاه — نیازمند تأیید شما)</td></tr>
+  <tr><td><b>۴</b></td><td>نقشه تعاملی</td><td>Plan.html → کامپوننت React: تب ۵ طبقه، رنگ وضعیت واحدها، زوم/پن، کلیک روی واحد → نمایش تقویم شمسی + رزروهای آن بازه</td><td>۳</td></tr>
+  <tr><td><b>۵</b></td><td>پیش‌رزرو آینده + پایش ساخت + گزارش + استقرار</td><td>ثبت علاقه‌مندی سوئیت در حال ساخت ← تبدیل به رزرو با تأیید مدیر، تایم‌لاین درصد پیشرفت فازها، گزارش‌های مدیریتی (اکسل/PDF)، سئو/سرعت، پشتیبان‌گیری روزانه، استقرار روی VPS</td><td>۲،۳،۴</td></tr>
+  <tr><td>۶ (ذخیره)</td><td>بهینه‌سازی یکپارچه</td><td>پاک‌سازی کد، import انبوه آرشیو، تابلوی نذورات، ریزه‌کاری UX — <b>فقط با درخواست شما</b></td><td>۵</td></tr>
+</table>
+<div class="box warn"><b>توضیح فشرده‌سازی:</b> در سند اولیه ۷ مرحله پیشنهاد شده بود؛ با حذف پخش زنده، حذف هدف-مبلغ صندوق‌ها، و داخلی‌ماندن ویدئو، دامنه به ۵ مرحله رسید. اگر کیفیت هر مرحله قربانی سرعت شود، مرحله ۵ را به دو بخش (پیش‌رزرو / استقرار) تقسیم می‌کنیم — تصمیم با شما پس از دیدن خروجی مرحله ۳.</div>
+</section>
+
+<section id="comms">
+<h2>ج. راه ارتباطی مشاور ↔ کدنویس (قرارداد مشترک همه مراحل)</h2>
+<ul>
+  <li><b>محل کار مشترک:</b> هر دو در <code>E:\APPs\AbolHasan</code> کار می‌کنند. کدنویس در انتهای هر مرحله فایل <code>reports/stage-NN.md</code> می‌نویسد: چه‌کار انجام شد، انحراف از پرامپت و دلیلش، نحوه اجرای پروژه، پرسش‌ها، و لیست فایل‌های تغییرکرده.</li>
+  <li><b>سوال در فایل، نه در مودال:</b> هر ابهام در همان <code>reports/stage-NN.md</code> زیر تیتر «سوالات» ثبت و سپس توقف می‌شود؛ مشاور فایل را می‌خواند و پاسخ را در <code>reports/replies.md</code> می‌نویسد.</li>
+  <li><b>پیام مستقیم (در صورت نیاز به هماهنگی زنده):</b> نشستن‌های چت این ورک‌اسپیس — مشاور: <span class="meta">«مشاور ابوالحسن»</span>، کدنویس: <span class="meta">«کدنویس» با شناسه <code>346d0d78-1f00-46a0-973f-11178d7cfc84</code></span>. ارجاع اصلی به فایل‌هاست تا سابقه از بین نرود.</li>
+  <li><b>پورت تست:</b> کدنویس روی <code>localhost:3210</code> تست می‌کند (پورت پیش‌فرض ۳۰۰۰ برای مرور شما خالی می‌ماند) و آدرس را در گزارش می‌نویسد.</li>
+</ul>
+</section>
+
+<section id="prompt1">
+<h2>د. پرامپت مرحله ۱ — متن آماده برای کدنویس</h2>
+<div class="prompt">پرامپت مرحله ۱ از ۵ — پروژه وب‌سایت هیئت حیدریه نجف‌اشرف ابولحسن (دامنه: <b>heidarieh-abolhasan.ir</b>)
+
+مرجع: سند <b>Spec_01_Requirements.html</b> در ریشه‌ی همین ورک‌اسپیس + <b>پاسخ به سوالات.docx</b>. این سند را اول کامل بخوان.
+محل کار مشترک: <b>E:\APPs\AbolHasan</b> — همه‌ی فایل‌های پروژه زیر همین پوشه، کد در <b>src/</b>.
+
+هدف این مرحله فقط «اسکلت + هویت» است. هیچ بخش محتوا، هیچ رزرو، هیچ نقشه، هیچ پرداخت. در این مرحله عجله نکن و همه‌ی موارد را «به اندازه‌ی کافی خوب» تمام کن؛ بهینه‌سازی و ریفکتور بزرگ به مرحله ۶ موکول است.
+
+۱) ابزار و پشته (تغيیرناپذیر تا مرحله ۶)
+   Node v24.18.0 و npm 11 در دسترس است. روی این ماشین <b>PHP/Composer و Flutter نصب نیست</b> — پس هر راه‌حل PHP را رد کن.
+   Next.js 15 با App Router + TypeScript + Tailwind CSS + shadcn/ui + <b>Drizzle ORM</b> روی <b>SQLite</b> (فایل <span class="en">data/app.db</span>). تاریخ: <span class="en">dayjs</span> با پلاگین شمسی. فونت: <b>وزیرمتن</b> را به‌صورت فایل WOFF2 در <span class="en">public/fonts/</span> با <span class="en">@font-face</span> بارگذاری کن (از Google Fonts CDN استفاده نکن؛ ترافیک ایران).
+   ساختار: <span class="en">src/app</span> (route groups: <span class="en">(public)</span> و <span class="en">(admin)</span>)، <span class="en">src/server</span> (db، auth، mail-sms adapter)، <span class="en">src/components</span>.
+
+۲) دیتابیس و مهاجرت
+   جداول این مرحله: <span class="en">users</span> (id, phone یکتا, name, national_id, birth_date_jalali, city, role: member|operator|admin, profile_complete bool, created_at) — <span class="en">otp_codes</span> (phone, code_hash, expires_at, attempts, consumed_at) — <span class="en">sessions</span> (id, user_id, token_hash, expires_at, created_at, last_seen_at).
+   برای پایداری ID در مراحل بعد، بدون UI فقط با مهاجرت تعریف و seed شوند: <span class="en">floors</span> (id, name, index 1..5) و <span class="en">units</span> (id, floor_id, code, type, capacity, nightly_price, status: old_house|under_construction|planned|blocked, demolition_date nullable, svg_polygon text nullable, svg_viewbox text nullable) — ۱۱ واحد نمونه با کد ۱ تا ۱۱ از پلیگون‌های <b>Plan.html</b> بردار (فقط polygon points را در svg_polygon ذخیره کن، نه کل فایل).
+   اسکریپت <span class="en">npm run db:reset</span> = migrate + seed (داده نمونه حداقلی).
+
+۳) احراز هویت (OTP پیامکی)
+   مسیر <span class="en">/login</span> (ورود): شماره موبایل → اعتبارسنجی فرمت ایرانی (<span class="en">^09\d{9}$</span>) → تولید کد ۶ رقمی، هش‌شده در DB، اعتبار ۲ دقیقه، حداکثر ۵ تلاش، سقف ۳ درخواست به‌ازای هر شماره در ساعت و سقف IP.
+   <b>در این مرحله هزینه پیامک ممنوع:</b> سرویس پیامکی را پشت یک adapter (<span class="en">src/server/sms.ts</span> با متد <span class="en">send(phone, text)</span>) بگذار و در dev حالت <span class="en">log</span> فعال باشد: کد در کنسول + در UI نمایش داده شود («شبیه‌ساز»). هیچ پکیج پیامکی پولی نصب و هیچ سرویسی خريداری نشود.
+   پس از تأیید: کاربر با آن phone ساخته/یافت می‌شود، <b>session</b> با کوکی HttpOnly + SameSite=Lax + Secure و <b>عمر ۳۰ روز</b> در DB. تفسیر «ماندن در همان IP» = همین نشست ماندگار است؛ IP یا UA را هرگز مبنای اخراج نکن.
+   کاربر در هر زمان می‌تواند از <span class="en">/login?logout=1</span> خارج شود. middleware: صفحات <span class="en">/admin*</span> نیازمند role مربوطه؛ بقیه عمومی.
+
+۴) گیت تکمیل پروفایل (قانون واحد)
+   اگر پروفایل کامل نبود (<span class="en">profile_complete=false</span>)، در ورود بعدی مودال محترمانه‌ی «تکمیل پروفایل» نمایش داده شود: نام، <b>کد ملی (الزامی، با اعتبارسنجی الگوریتمی checksum)</b>، شهر، تاریخ تولد شمسی. بستن مودال مانع مشاهده محتوا نشود.
+   هر نقطه‌ی نیازمند رزرو (مراحل بعد) فقط شرط <span class="en">profile_complete</span> را چک کند — دو مسیر مجزا نساز.
+
+۵) UI و layout عمومی
+   <span class="en">dir="rtl" lang="fa"</span>، تم روشن با رنگ اصلی سبز-یشمی/طلایی (حس مذهبی)، کارت‌های ساده، کاملاً ریسپانسیو (اولویت موبایل).
+   header با منوی ۱۰ بخش (خانه، صوت، تصویر، ویدئو، برنامه‌ها، مقالات، مهمانسرا، پیشرفت ساخت، نذورات، ورود/پروفایل) — صفحاتplaceholder با تیتر «به‌زودی» تا مرحله ۲/۳.
+   footer با نام هیئت و شماره تماس placeholder.
+   <span class="en">/profile</span>: نمایش نام/شهر/کد ملی (با ماسک) + دکمه خروج + (placeholder) لیست رزروهای من.
+
+۶) پنل مدیریت (فقط shell)
+   <span class="en">/admin</span> با layout کناری RTL و آیتم‌های: محتوا، واحدها و تعرفه، رزروها، نذورات، گزارش‌ها، پیشرفت ساخت، نقشه. هر کدام صفحه‌ی خالی با تیتر + جدول خالی «کاربری در این مرحله».
+   <span class="en">/admin/users</span> واقعی باشد: لیست کاربران، جست‌وجوی موبایل، تغییر role، تگ «پروفایل ناقص».
+   دسترسی: فقط role=admin (اپراتور از مرحله ۳). seed: یک ادمین نمونه با موبایل <span class="en">09120000000</span>.
+
+۷) محدودیت‌های سخت (تخطی ممنوع)
+   • هیچ خرید/ثبت‌نام سرویس پولی: دامنه، VPS، پکیج پیامک، درگاه پرداخت، CDN.
+   • هیچ استقرار و هیچ deploy.
+   • هیچ نصب پکیج سنگین خارج از لیست بنیادی (اگر پکیجی لازم دیدی، در گزارش «سوالات» بپرس و موقتاً دستی پیاده کن).
+   • دست نزدن به فایل‌های مرجع: Spec_01_Requirements.html, Plan.html, draw.html, plan.dxf, plan.JPG (فقط خواندن).
+   • عدم ساخت قابلیت‌های مرحله ۲ تا ۵ (محتوا، رزرو، نقشه، پرداخت).
+
+۸) تحویل و راه ارتباطی
+   • پورت توسعه: <span class="en">npm run dev</span> روی <b>localhost:3210</b> (با flag). پورت ۳۰۰۰ را اشغال نکن.
+   • خودت تست کن: ورود با OTP شبیه‌ساز، ایجاد پروفایل، مودال تکمیل، گیت ادمین، خروج، و بعد از reload مرورگر نشست باقی بماند.
+   • در انتها فایل <b>reports/stage-01.md</b> بنویس: (الف) فهرست فایل‌های ساخته‌شده (ب) نحوه‌ی اجرا و تست، آدرس پورت (ج) آنچه خواسته شد و <b>انجام نشد یا تغییر کرد + دلیل</b> (د) زیر تیتر «سوالات» هر ابهام را بنویس و <b>سپس توقف کن</b> — سوال را در مودال نپرس و منتظر پاسخ مشاور در reports/replies.md بمان.
+   • برای هماهنگی زنده در صورت نیاز: نشست چت «کدنویس» این ورک‌اسپیس (<span class="en">346d0d78-1f00-46a0-973f-11178d7cfc84</span>) با مشاور «مشاور ابوالحسن»؛ ولی مرجع رسمی همان فایل‌های reports است.
+   • معیار پذیرش مرحله: متن بالا بند ۱ تا ۶ بدون خطای build/TypeScript، بدون console error در صفحه‌ی ورود و پنل.</div>
+</section>
+
+<section id="gate">
+<h2>ه. معیار پذیرش مرحله ۱ (چک‌لیست من پس از دریافت گزارش)</h2>
+<ol>
+  <li><code>npm run dev</code> روی پورت ۳۲۱۰ بالا می‌آید و خانه RTL با فونت وزیرمتن و منوی ۱۰ بخشه نمایش داده می‌شود.</li>
+  <li>با یک شماره‌ی تست، OTP شبیه‌ساز → ورود → بستن و بازکردن مرورگر → همچنان وارد (نشست ۳۰ روزه).</li>
+  <li>مودال تکمیل پروفایل نمایش داده می‌شود؛ کد ملی نادرست رد می‌شود؛ پس از تکمیل <code>profile_complete=true</code>.</li>
+  <li>دسترسی مستقیم به <code>/admin</code> با کاربر عادی مسدود؛ با ادمین seed باز.</li>
+  <li>۱۱ واحد با پلیگون‌های Plan.html در DB seed شده‌اند (مرحله ۴ مصرفشان می‌کند).</li>
+  <li>هیچ هزینه‌ای ایجاد نشده: نه سرویس پیامک، نه دامنه، نه سرور.</li>
+  <li><code>reports/stage-01.md</code> موجود و صادقانه (انحراف‌ها ذکر شده).</li>
+</ol>
+<div class="box ok"><b>پس از تأیید مرحله ۱ توسط شما</b> (با دیدن سایت روی localhost یا خواندن گزارش)، پرامپت مرحله ۲ (محتوای عمومی) را می‌نویسم.</div>
+</section>
+
+<section>
+<h2>تک‌جمله ارجاع (برای کپی و دادن به کدنویس)</h2>
+<div class="copy">«فایل <code>Prompt_01_Stage1.html</code> را در ریشه‌ی <code>E:\APPs\AbolHasan</code> باز کن، فقط «پرامپت مرحله ۱» داخل آن را اجرا کن، و در پایان گزارش را در <code>reports/stage-01.md</code> بنویس و منتظر پاسخ من بمان.»</div>
+<p class="meta">همین جمله در <code>handoff.txt</code> هم ذخیره شده تا هر زمان قابل کپی باشد.</p>
+</section>
+
+</div>
+</body>
+</html>

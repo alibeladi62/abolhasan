@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پرامپت مرحله ۳ — موتور رزرو مهمانسرا + مالی | هیئت ابولحسن</title>
+<style>
+  :root{
+    --ink:#1f2430; --muted:#5b6472; --line:#d8dde6; --bg:#f6f7fb;
+    --card:#ffffff; --accent:#0e5a6b; --accent-soft:#e2f0f3;
+    --warn:#8a5a00; --warn-soft:#fdf3dc; --ok:#1f6b3a; --ok-soft:#e6f4ea;
+  }
+  *{box-sizing:border-box}
+  body{font-family:Tahoma,"Segoe UI",Arial,sans-serif; background:var(--bg); color:var(--ink); margin:0; line-height:1.9; font-size:15px;}
+  .wrap{max-width:1000px; margin:0 auto; padding:24px 16px 80px;}
+  header{background:var(--accent); color:#fff; border-radius:14px; padding:24px 28px; margin-bottom:22px;}
+  header h1{margin:0 0 8px; font-size:24px}
+  header p{margin:0; opacity:.92}
+  section{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 24px; margin-bottom:20px;}
+  h2{margin:0 0 14px; font-size:19px; color:var(--accent); border-inline-start:5px solid var(--accent); padding-inline-start:12px;}
+  table{width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:14px;}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:right; vertical-align:top;}
+  th{background:var(--accent-soft); color:var(--accent)}
+  ul,ol{padding-inline-start:22px; margin:6px 0}
+  li{margin-bottom:5px}
+  .meta{color:var(--muted); font-size:13px}
+  code{background:#eef1f6; border-radius:5px; padding:1px 7px; font-family:Consolas,monospace; font-size:13px; direction:ltr; display:inline-block}
+  .box{border-radius:10px; padding:12px 16px; margin:12px 0; border:1px solid var(--line)}
+  .box.warn{background:var(--warn-soft); border-color:#e8c877}
+  .box.ok{background:var(--ok-soft); border-color:#a8d5b5}
+  .prompt{background:#0f1420; color:#e8edf6; border-radius:12px; padding:20px 22px; margin:14px 0;
+          font-family:Consolas,monospace; font-size:13px; line-height:2.1; direction:rtl; white-space:pre-wrap; word-wrap:break-word;}
+  .prompt b{color:#ffd479}
+  .prompt .en{direction:ltr; display:inline-block; color:#8fd4ff}
+  .copy{background:var(--accent-soft); border:1px dashed var(--accent); border-radius:10px; padding:12px 16px; margin:10px 0; font-weight:bold;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>مرحله ۲ تأیید شد — پرامپت مرحله ۳: موتور رزرو + مالی</h1>
+  <p>نظارت مشاور ۱۴۰۵/۰۸/۰۴: ۹ مسیر ۲۰۰ | traversal ۴۰۴ | Range ۲۰۶ | شمارش DB مطابق گزارش | پاسخ ۸ سوال در <code>reports/replies.md</code></p>
+</header>
+
+<section>
+<h2>الف. وضعیت</h2>
+<div class="box ok"><b>مرحله ۲ تأیید شد.</b> انحراف‌های ج۱ تا ج۹ همگی قبول (شامل CSP روی SVG، bodySizeLimit، و بازنویسی ادعای تست مرحله ۱ طبق اجازه بند ۵ پاسخ‌ها). نظارت مستقل مشاور: پروب‌های HTTP/Range/traversal مطابق گزارش + اجرای کامل <code>scripts/e2e-stage02.mjs</code> روی ماشین من → <b>۶۱/۶۱ PASS</b> (دو شکست اولیه‌ی اجراهای من، مصرف سقف OTP توسط تکرار آزمون بود نه نقص محصول — جزئیات در <code>reports/replies.md</code>).</div>
+<div class="box warn"><b>دو داده‌ی کارفرما هنوز نرسیده و بلوکر نیستند:</b> نرخ واقعی واحدها و نام دقیق صندوق‌ها. با مقادیر نمونه‌ی برچسب‌خورده «نمونه» بساز؛ هر دو از پنل قابل ویرایش بمانند تا کارفرما خودش عوض کند.</div>
+</section>
+
+<section>
+<h2>ب. پرامپت مرحله ۳ — متن آماده برای کدنویس</h2>
+<div class="prompt">پرامپت مرحله ۳ از ۵ — موتور رزرو مهمانسرا + فاکتور + نذورات (سند مرجع: Spec_01 بند ۴ و ۵ + reports/replies.md)
+
+هدف: کاربر واردشده با پروفایل کامل بتواند اتاق قدیمی رزرو کند، با پرداخت (sandbox) قطعی شود و فاکتور بگیرد؛ نذورات هم برای عموم بدون لاگین کار کند؛ پنل میهمان‌پذیری و مالی ساخته شود. <b>بدون</b> نقشه React (مرحله ۴)، بدون شبیه‌سازی علاقه‌مندی/پیش‌رزرو آینده و پایش ساخت (مرحله ۵)، بدون درگاه واقعی.
+
+۱) پیکربندی و واحد/نرخ (ساخت واقعی پنل)
+   <span class="en">/admin/units</span> واقعی: فهرست ۱۱ واحد + ساخت/ویرایش: نام/کد، طبقه (فیلد <span class="en">floor_id</span> را الان کاربردی کن؛ پیش‌فرض همکف)، تیپ، ظرفیت، <span class="en">nightly_price</span> (عدد صحیح تومان، با برچسب «نمونه — در انتظار لیست کارفرما» روی همه)، وضعیت (old_house / under_construction / planned / blocked) و <span class="en">demolition_date</span> (nullable). تغییر نرخ فقط روی رزروهای آینده اثر بگذارد (مبلغ رزرو در لحظه ساخت snapshot می‌شود، بند ۳).
+   واحدهای under_construction/planned در صفحه‌ی عمومی فقط بنر «به‌زودی — ثبت علاقه‌مندی از مرحله بعد»؛ هیچ فرم رزروی برایشان نساز.
+
+۲) مهاجرت جدید (داده مراحل ۱ و ۲ دست‌نخورده)
+   <span class="en">reservations</span>: id, unit_id, user_id, <b>check_in</b> و <b>check_out</b> (ISO میلادی؛ check_out انحصاری/exclusive)، nights محاسبه‌ای نه ستون، guests، status enum: <span class="en">hold|confirmed|cancelled|completed|no_show</span>، hold_expires_at nullable، amount_toman (snapshot)، created_at، note، cancelled_by nullable.
+   <span class="en">payments</span>: id, kind enum <span class="en">reservation|donation</span>, ref_id (reservation یا donation)، amount_toman, provider text ('sandbox' فعلاً)، status enum <span class="en">created|success|failed</span>، provider_ref nullable، paid_at، meta_json.
+   <span class="en">invoices</span>: id, number یکتا (فرمت <span class="en">INV-۱۴۰۵-۰۰۰۱</span> — شمارش سال شمسی از lib jalali)، reservation_id یکتا، lines_json (اقلام: نرخ×شب، خدمات)، subtotal/discount/total_toman، issued_at.
+   <span class="en">funds</span>: id, name, slug, is_active، archived_at nullable. seed چهار صندوق نمونه با برچسب «نمونه»: هزینه جاری هیئت، برنامه‌های تهران، ساخت زائرسرای امام‌علی(ع) مشهد، کمک‌به‌هزینه‌ی زائران.
+   <span class="en">donations</span>: id, fund_id, amount_toman, donor_name nullable, is_anonymous bool, message nullable, payment_id.
+   ایندکس برای کوئری تضاد: <span class="en">idx_res_unit_dates(unit_id, check_in, check_out)</span>.
+
+۳) قفل تضاد و hold (مهم‌ترین بند فنی)
+   ثبت رزرو در <b>تراکنش IMMEDIATE</b>: ابتدا بازه‌های فعال (<span class="en">hold|confirmed|completed</span>) همان واحد با هم‌پوششی (<span class="en">check_in &lt; ? AND check_out &gt; ?</span>) و واحد status != blocked و check_in &lt;= demolition_date چک شود؛ سپس insert. اگر hold دیگری همین بازه را گرفته و مهلتش (<span class="en">hold_expires_at</span> ۱۵ دقیقه) تمام نشده، در همان تراکنش hold منقضی را cancelled کن و برو برای ثبت.
+   <b>اسکریپت تمیزکار hold:</b> تابعی که holdهای منقضی‌شده را cancelled می‌کند؛ هم در هر کوئری تقویم صدا شود و هم در تست با پس‌تاریخ اعتبارسنجی شود (cron واقعی → مرحله ۵).
+   مبلغ سمت سرور و از DB: <span class="en">nights × nightly_price</span> — هرگز مبلغ را از کلاینت نپذیر (تست: فرم دستکاری‌شده با amount تقلبی باید همان مبلغ سرور را پرداخت کند).
+
+۴) جریان کاربر (عمومی، بعد از گیت)
+   <span class="en">/guesthouse</span>: فهرست واحدهای old_house با نام/ظرفیت/نرخ؛ <span class="en">/guesthouse/[id]</span>: تقویم شمسی ماه‌به‌ماه (پرکردن روزهایی که hold/confirmed دارند + محدودیت demolition/گذشتن تاریخ) + انتخاب شروع و پایان (check-out انحصاری، سقف ۳۰ شب، حداقل ۱ شب) + شمار میهمان (≤ ظرفیت) + خلاصه مبلغ.
+   گیت: ورود + <span class="en">profile_complete</span> (مطابق قرارداد مرحله ۱ — همان یک پرچم).
+   ثبت → status=hold با مهلت ۱۵ دقیقه → صفحه <span class="en">/pay/[paymentId]</span> sandbox: دو دکمه «پرداخت موفق» / «پرداخت ناموفق» (درخواست POST با چک مالکیت نشست). موفق: payment=success، reservation=confirmed، invoice صادر، پیامک (شبیه‌ساز) برای کاربر. ناموفق/عبور مهلت: cancelled و آزادشدن بازه.
+   <span class="en">/pay/*</span> فقط برای مالک payment (ref متعلق به user جاری) مجاز است.
+   <span class="en">/profile</span> بخش «رزروهای من» فعال: پیش‌رو/تاریخی، وضعیت، لینک فاکتور، لغو (فقط قبل از پرداخت؛ بعد از پرداخت پیام «با مدیریت تماس بگیرید» و هیچ کنش مالی خودکار نه).
+   <span class="en">/invoice/[id]</span>: صفحه RTL چاپی (<span class="en">@media print</span>) با شماره فاکتور، سررسید، اقلام، جمع؛ PDF واقعی (Puppeteer) <b>نمی‌سازیم</b> — در بدهی مرحله ۶ ثبت کن.
+
+۵) adapter پرداخت (شکلِ اتصال، بدون خرید)
+   <span class="en">src/server/payment.ts</span>: interface <span class="en">createPayment(amount, callbackMeta) → {payUrl}</span> و <span class="en">verify(paymentId) → status</span>. پیاده‌سازی <span class="en">sandbox</span> (پیش‌فرض، همان صفحه /pay). ساختار پوشه طوری باشد که adapter زرین‌پال در مرحله ۵ فقط یک فایل جدید + env باشد (کلید واقعی نمی‌خریم؛ هیچ request خارجی در این مرحله).
+
+۶) نذورات (عمومی، بدون لاگین)
+   <span class="en">/donations</span> فعال: انتخاب صندوق (فقط active) + مبلغ با پیشنهادها (۵۰/۱۰۰/۲۰۰/۵۰۰ هزار تومان + دلخواه، سقف ۵۰ میلیون) + «ناشنس (اهدا از طرف امام‌زمان(عج))» سوییچ + نام اختیاری + پیام اختیاری → همان flow sandbox → صفحه رسید «نذرتان قبول» + ثبت donation. اعتبارسنجی سمت سرور؛ rate-limit IP: حداکثر ۱۰ تراکنش ساخت در ساعت (مثل OTP).
+   <span class="en">/admin/donations</span>: فهرست تراکنش‌ها با فیلتر صندوق/بازه شمسی/وضعیت + جمع تجمیعی هر صندوق (سطر جمع در همان صفحه) + فعال/بایگانی صندوق. «خروجی تفکیکی برای تحویل به امین» فعلاً همان جدول صفحه؛ اکسل → مرحله ۵.
+
+۷) پنل میهمان‌پذیری
+   <span class="en">/admin/reservations</span>: فهرست + فیلتر بازه/واحد/وضعیت + نمای «امروز» (ورودی/خروجی/ساکن). کنش‌ها: چک‌این، چک‌اوت (completed)، no_show، لغو با دلیل (cancelled_by)، ثبت «پرداخت حضوری» (payment kind=reservation, provider='cash', status=success → confirm + فاکتور)، ساخت رزرو دستی برای میهمان حضوری (اگر کاربر ندارد: نام+موبایل در note و user_id=null — رزرو walk-in فقط با role admin/operator).
+   نقش <b>operator</b>: فقط /admin/reservations و /admin/donations (فهرست) و چک‌این/اوت — بدون ویرایش نرخ/واحد و بدون تغییر نقش. در seed یک اپراتور نمونه بساز (از user نمونه ۰۹۱۲۱۱۱۱۱۱۱ با پروفایل کامل، role=operator) و در تست پوشش بده.
+
+۸) تست‌ها (الگوی همیشگی + اجازه بند ۵ replies)
+   <span class="en">scripts/e2e-stage03.mjs</span> حداقل: الف) دو رزرو هم‌زمان (دو درخواست Promise هم‌زمان) روی یک واحد و یک شب → یکی confirmed/hold، دیگری رد با پیام فارسی «این بازه رزرو شده است» ب) hold منقضی با پس‌تاریخ DB → تمیزکار آزاد می‌کند و رزرو جدید می‌گیرد ج) چرخه کامل: تقویم خالی → انتخاب تاریخ → hold → پرداخت sandbox موفق → فاکتور با شماره صحیح و مبلغ سروری → نمایش در /profile د) پرداخت ناموفق → بازه آزاد ه) مبلغ تقلبی در فرم → همان مبلغ سرور و) گیت: کاربر ناقص‌پروفایل نمی‌تواند رزرو کند ز) نذر بدون لاگین → رسید + نمایش در پنل و جمع صندوق ح) operator: چک‌این/اوت مجاز، /admin/units مسدود ط) سقف demolition: واحد با تاریخ تخریب، بازه‌ی بعد از آن را رد کند ی) رگرسیون کامل stages 01+02+limits.
+   build را با distDir جدا از env بگیر (مطابق اجازه بند ۶ replies) تا dev مخرب نشود. اسکرین‌شات‌ها در <span class="en">reports/assets/stage-03/</span> (خانه/مهمانسرا، تقویم با روزهای پر، /pay sandbox، فاکتور، /donations، پنل رزروها، نمای اپراتور).
+
+۹) محدودیت‌های سخت (بدون تغییر)
+   • هیچ خرید درگاه/سرویس؛ هیچ request پرداخت خارجی؛ هیچ deploy.
+   • پشته ثابت؛ پکیج جدید فقط با پرسیدن در «سوالات» (نباید لازم شود).
+   • فایل‌های مرجع فقط‌خواندنی؛ منطق auth مرحله ۱ بدون تغییر (جز افزودن گیت‌های مصرفی).
+   • نقشه React و علاقه‌مندی/شبیه‌سازی آینده نساز (مرحله ۴/۵)؛ ویدئو/محتوا را دست‌کم نگیر — رگرسیون باید سبز بماند.
+
+۱۰) تحویل
+    گزارش <b>reports/stage-03.md</b> با ساختار همیشگی (انحراف‌ها با دلیل + «تست‌های بازنویسی‌شده» + «سوالات» + بدهی‌های به‌مرحله‌۶ مثل PDF Puppeteer و cron تمیزکار) و سپس توقف. پورت ۳۲۱۰.</div>
+</section>
+
+<section>
+<h2>ج. چک‌لیست پذیرش مرحله ۳ (سنجش من)</h2>
+<ol>
+  <li>تضاد همزمان: با اجرای دوباره‌ی تست (۸-الف) روی DB تازه، واقعاً فقط یک رزرو ثبت شود.</li>
+  <li>مسیر دستی: رزرو با ۰۹۱۲۱۱۱۱۱۱۱ (پروفایل کامل) → پرداخت sandbox → فاکتور INV-... و نمایش در /profile.</li>
+  <li>مبلغ از سرور: در شبکه، amount درخواست‌شده در verify با مبلغ رزرو برابر باشد.</li>
+  <li>نذورات: یک اهدای ناشناس بدون لاگین کامل شود و جمع صندوق در پنل به‌روز شود.</li>
+  <li>operator نتواند /admin/units را ببیند (تست ۸-ح).</li>
+  <li>رگرسیون ۰۱/۰۲/limits + e2e ۰۳ سبز؛ typecheck و build (با distDir جدا) تمیز.</li>
+  <li>هیچ کلید/سرویس پرداخت واقعی در کد یا env نباشد (grep خودم: zarinpal فقط به‌شکل کامنت/ساختار).</li>
+</ol>
+</section>
+
+<section>
+<h2>تک‌جمله ارجاع</h2>
+<div class="copy">«فایل Prompt_03_Stage3.html را در ریشه‌ی E:\APPs\AbolHasan باز کن، اول reports/replies.md را بخوان، سپس فقط بخش «پرامپت مرحله ۳» را اجرا کن و گزارش را در reports/stage-03.md بنویس و منتظر تأیید من بمان.»</div>
+</section>
+
+</div>
+</body>
+</html>

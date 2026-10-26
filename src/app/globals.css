@@ -1,0 +1,300 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: var(--font-sans);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.205 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.205 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.922 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+/* ── فونت وزیرمتن: فایل‌های محلی WOFF2 (بدون CDN) ───────────────── */
+@font-face {
+  font-family: 'Vazirmatn';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/Vazirmatn-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/Vazirmatn-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Vazirmatn';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/Vazirmatn-Bold.woff2') format('woff2');
+}
+
+/* ── تم هیئت: سبز یشمی + طلایی، رنگ روشن ────────────────────────── */
+@theme {
+  --color-jade: #0e6b5c;
+  --color-jade-dark: #0a4c41;
+  --color-gold: #c8a45c;
+  --color-gold-soft: #f6efdf;
+}
+
+:root {
+  --font-sans: 'Vazirmatn', Tahoma, 'Segoe UI', sans-serif;
+  --background: #f7f8f6;
+  --foreground: #1f2430;
+  --card: #ffffff;
+  --card-foreground: #1f2430;
+  --popover: #ffffff;
+  --popover-foreground: #1f2430;
+  --primary: #0e6b5c;
+  --primary-foreground: #ffffff;
+  --secondary: #eaf2f0;
+  --secondary-foreground: #0a4c41;
+  --muted: #f1f3f2;
+  --muted-foreground: #5b6472;
+  --accent: #f6efdf;
+  --accent-foreground: #7a5a1a;
+  --destructive: #9c1f1f;
+  --border: #dfe4e1;
+  --input: #dfe4e1;
+  --ring: #0e6b5c;
+  --sidebar: #f2f5f3;
+  --sidebar-foreground: #1f2430;
+  --sidebar-primary: #0e6b5c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f6efdf;
+  --sidebar-accent-foreground: #7a5a1a;
+  --sidebar-border: #dfe4e1;
+  --sidebar-ring: #0e6b5c;
+}
+
+@layer base {
+  body {
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* اعداد فارسی در متن‌های فارسی، لاتین در کدها و شماره تماس */
+  .num-latin {
+    font-feature-settings: 'tnum';
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
+  }
+}
+
+/* ── تایپوگرافی متن مقاله: خوانا، RTL، عرض محدود ─────────────────── */
+.article-body {
+  max-width: 46rem;
+  font-size: 1.0625rem;
+  line-height: 2.1;
+  color: #2b3140;
+}
+.article-body > :first-child {
+  margin-top: 0;
+}
+.article-body h2,
+.article-body h3,
+.article-body h4 {
+  color: var(--color-jade-dark);
+  font-weight: 700;
+  line-height: 1.7;
+  margin: 2.25rem 0 0.9rem;
+}
+.article-body h2 {
+  font-size: 1.5rem;
+}
+.article-body h3 {
+  font-size: 1.25rem;
+}
+.article-body h4 {
+  font-size: 1.1rem;
+}
+.article-body p {
+  margin: 0 0 1.15rem;
+}
+.article-body strong {
+  font-weight: 700;
+  color: #1f2430;
+}
+.article-body em {
+  font-style: italic;
+}
+.article-body code {
+  direction: ltr;
+  unicode-bidi: embed;
+  background: var(--color-gold-soft);
+  border-radius: 0.35rem;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.95em;
+}
+.article-body ul,
+.article-body ol {
+  margin: 0 0 1.25rem;
+  padding-inline-start: 1.6rem;
+}
+.article-body ul {
+  list-style: disc;
+}
+.article-body ol {
+  list-style: decimal;
+}
+.article-body li {
+  margin-bottom: 0.45rem;
+}
+.article-body a {
+  color: var(--color-jade);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  word-break: break-word;
+}
+.article-body a:hover {
+  color: var(--color-jade-dark);
+}
+.article-body blockquote {
+  border-inline-start: 4px solid var(--color-gold);
+  background: var(--color-gold-soft);
+  color: #57451c;
+  font-weight: 500;
+  margin: 1.6rem 0;
+  padding: 0.9rem 1.15rem;
+  border-radius: 0.5rem;
+}
+.article-body hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+/* تصاویر داخل متن: همیشه داخل ستون، بدون سرریز */
+.article-body img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  margin: 1.5rem auto;
+  border-radius: 0.75rem;
+}
+@media (max-width: 640px) {
+  .article-body {
+    font-size: 1rem;
+    line-height: 1.95;
+  }
+}

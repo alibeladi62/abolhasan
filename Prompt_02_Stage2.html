@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پرامپت مرحله ۲ — محتوای عمومی | هیئت ابولحسن</title>
+<style>
+  :root{
+    --ink:#1f2430; --muted:#5b6472; --line:#d8dde6; --bg:#f6f7fb;
+    --card:#ffffff; --accent:#0e6b5c; --accent-soft:#e2f1ee;
+    --warn:#8a5a00; --warn-soft:#fdf3dc; --ok:#1f6b3a; --ok-soft:#e6f4ea;
+  }
+  *{box-sizing:border-box}
+  body{font-family:Tahoma,"Segoe UI",Arial,sans-serif; background:var(--bg); color:var(--ink); margin:0; line-height:1.9; font-size:15px;}
+  .wrap{max-width:1000px; margin:0 auto; padding:24px 16px 80px;}
+  header{background:var(--accent); color:#fff; border-radius:14px; padding:24px 28px; margin-bottom:22px;}
+  header h1{margin:0 0 8px; font-size:24px}
+  header p{margin:0; opacity:.92}
+  section{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px 24px; margin-bottom:20px;}
+  h2{margin:0 0 14px; font-size:19px; color:var(--accent); border-inline-start:5px solid var(--accent); padding-inline-start:12px;}
+  table{width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:14px;}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:right; vertical-align:top;}
+  th{background:var(--accent-soft); color:var(--accent)}
+  ul,ol{padding-inline-start:22px; margin:6px 0}
+  li{margin-bottom:5px}
+  .meta{color:var(--muted); font-size:13px}
+  code{background:#eef1f6; border-radius:5px; padding:1px 7px; font-family:Consolas,monospace; font-size:13px; direction:ltr; display:inline-block}
+  .box{border-radius:10px; padding:12px 16px; margin:12px 0; border:1px solid var(--line)}
+  .box.warn{background:var(--warn-soft); border-color:#e8c877}
+  .box.ok{background:var(--ok-soft); border-color:#a8d5b5}
+  .prompt{background:#0f1420; color:#e8edf6; border-radius:12px; padding:20px 22px; margin:14px 0;
+          font-family:Consolas,monospace; font-size:13px; line-height:2.1; direction:rtl; white-space:pre-wrap; word-wrap:break-word;}
+  .prompt b{color:#ffd479}
+  .prompt .en{direction:ltr; display:inline-block; color:#8fd4ff}
+  .copy{background:var(--accent-soft); border:1px dashed var(--accent); border-radius:10px; padding:12px 16px; margin:10px 0; font-weight:bold;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>مرحله ۱ تأیید شد — پرامپت مرحله ۲: محتوای عمومی</h1>
+  <p>تحقق مشاور ۱۴۰۵/۰۸/۰۳: HTTP 200 روی ۳۲۱۰ | DB: ۱۱ واحد، ۵ طبقه، ۴ کاربر (۱ ادمین) | پاسخ ۷ سوال در <code>reports/replies.md</code></p>
+</header>
+
+<section>
+<h2>الف. وضعیت و پاسخ‌های کلیدی</h2>
+<div class="box ok"><b>تأیید مرحله ۱:</b> هر ۷ معیار پذیرش سنجیده شد؛ انحراف‌های ج۱ (چک نقش در layout)، ج۲ (shim دستی <code>node:sqlite</code>)، ج۳ (تقویم شمسی دستی)، ج۴ (puppeteer-core) و ج۵ (سقف IP در حافظه) همگی **قبول** است. جزئیات و پاسخ ۷ سوال در <code>reports/replies.md</code>.</div>
+<ul>
+  <li>تعرفه واحدها تا دریافت لیست واقعی کارفرما صفر می‌ماند (لازم برای مرحله ۳، نه این مرحله).</li>
+  <li>تفکیک ۵ طبقه و ادیتور پلیگون → مرحله ۴. در این مرحله با همان ۱۱ واحد/همکف کار نمی‌شود.</li>
+  <li><code>puppeteer-core</code> می‌ماند؛ الگوی تست هر مرحله: اسکریپت e2e جدید + رگرسیون مراحل قبل.</li>
+</ul>
+</section>
+
+<section>
+<h2>ب. پرامپت مرحله ۲ — متن آماده برای کدنویس</h2>
+<div class="prompt">پرامپت مرحله ۲ از ۵ — محتوای عمومی وب‌سایت هیئت حیدریه نجف‌اشرف ابولحسن
+
+مرجع: <b>Spec_01_Requirements.html</b> + <b>reports/replies.md</b> (پاسخ سوالات مرحله ۱ — اول بخوان).
+هدف این مرحله: پنج بخش عمومی (صوت، تصویر/آلبوم اشخاص، ویدئو، برنامه‌ها، مقالات) با پنل مدیریت محتوا و seed نمونه. <b>بدون</b> رزرو، پرداخت، نقشه React، نذورات. همان قانون «به اندازه کافی خوب»؛ بهینه‌سازی به مرحله ۶.
+
+۱) مدل داده (migration جدید، داده موجود مرحله ۱ حفظ شود)
+   جداول: <span class="en">categories</span> (id, name, slug, kind: article|audio|video|program) — <span class="en">media_assets</span> (id, kind: audio|image|video, original_name, stored_path, mime, size_bytes, duration_sec nullable, created_at) — <span class="en">audios</span> (id, title, narrator, performer, occasion enum: moharram|ramadan|fatimiye|other, asset_id, description, published_at, is_published) — <span class="en">albums</span> (id, title, description, cover_asset_id, created_at) — <span class="en">photos</span> (id, album_id, asset_id, caption, sort) — <span class="en">persons</span> (id, name, slug, bio text, is_deceased, main_photo_id, album_id) — <span class="en">videos</span> (id, title, occasion, asset_id, description, program_date_jalali, is_published) — <span class="en">programs</span> (id, title, date_jalali, start_time, place, kind enum: ceremony|lecture|class|other, is_cancelled, description) — <span class="en">articles</span> (id, title, slug یکتا, body_markdown, excerpt, cover_asset_id, author, category_id, tags comma-text, published_at, is_published).
+   slug فارسی: با یک تابع تبدیل ساده و یکتایی؛ collision را با پسوند عددی حل کن.
+
+۲) فایل‌ها و سرو
+   آپلود از پنل → ذخیره در <span class="en">storage/uploads/&lt;kind&gt;/&lt;random-name&gt;.&lt;ext&gt;</span> (خارج از <span class="en">public/</span>؛ این پوشه را به .gitignore اضافه کن). اعتبارسنجی: ext+mime مجاز (mp3/wav/m4a؛ jpg/png/webp؛ mp4/webm)، سقف حجم: صوت ۵۰MB، تصویر ۱۰MB، ویدئو ۵۰۰MB (عدد config، تست با فایل کوچک).
+   سرو از <span class="en">/api/files/[...path]</span>: فقط مسیری که در جدول media_assets ثبت شده بپذیر (lookup با stored_path؛ هر ورودی خام path ممنوع ← دفاع علیه path traversal)، content-type درست، و <b>پشتیبانی Range برای استریم صوت/ویدئو</b> (وضعیت ۲۰۶).
+   حذف آیتم از پنل: حذف رکورد + حذف فایل از دیسک؛ asset مشترک را قبل از حذف چک کن هیچ ردیف دیگری مرجعش نباشد.
+
+۳) صفحات عمومی (همه SSR با <span class="en">generateMetadata</span>؛ عنوان/توضیح/OG فارسی)
+   • <span class="en">/audio</span>: لیست کارت‌ها + پلیکن چسبان پایین صفحه (پخش/توقف، نوار زمان، ادامه پخش موقع جابه‌جایی صفحه تا حد ممکن) + فیلتر راوی/مناسبت + مرتب‌سازی تاریخ. صفحه هر فایل لازم نیست؛ لیست کافی است.
+   • <span class="en">/gallery</span>: گرید آلبوم‌ها ← <span class="en">/gallery/[id]</span> نمای grid + lightbox ساده (قبلی/بعدی/esc).
+   • <span class="en">/gallery/persons</span>: آلبوم افراد قدیمی و مرحوم هیئت — کارت هر شخص + نشان «متوفی» ← <span class="en">/gallery/persons/[slug]</span> معرفی‌نامه (bio) + گالری عکس‌هایش.
+   • <span class="en">/video</span>: گرید کارت با thumbnail (کاور یا فریم اول اگر میسر نشد کادر ساده) ← صفحه ویدئو با پلیکن HTML5 و متادیتا.
+   • <span class="en">/programs</span>: دو ستون «پیش‌رو» (بر اساس امروز شمسی) و «برگزارشده» + چیپ لغوشده‌ها؛ کارت هر برنامه، صفحه جدا لازم نیست.
+   • <span class="en">/articles</span>: لیست + فیلتر دسته/برچسب ← <span class="en">/articles/[slug]</span> تایپوگرافی خوانای RTL فارسی (line-height مناسب، عرض متن محدود، تصاویر داخل متن responsive). رندر markdown: یک سابست کوچک دست‌ساز در <span class="en">src/lib/markdown.ts</span> (هدینگ، پاراگراف، bold/italic، لیست، لینک، تصویر، blockquote) — اگر پکیج خواستی (مثلاً marked) در گزارش «سوالات» بپرس و فعلاً دست‌ساز بساز. HTML خروجی markdown را sanitize کن (whitelist تگ؛ لینک‌ها rel=noopener).
+   • خانه <span class="en">/</span>: جایگزینی placeholderها با کارت‌های واقعی: آخرین ۳ مقاله، آخرین ۳ صوت، ۳ برنامه پیش‌رو، لینک آلبوم اشخاص، بنر کوچکی برای «پیشرفت ساخت» (لینک placeholder مرحله ۵). چیپ «مرحله N» فقط برای بخش‌های نیامده (مهمانسرا/نذورات) بماند.
+
+۴) پنل مدیریت محتوا
+   <span class="en">/admin/content</span با تب‌ها: مقالات، صوت، تصویر/آلبوم/اشخاص، ویدئو، برنامه‌ها، دسته‌ها. برای هر نوع: فهرست + ساخت/ویرایش/حذف + سوییچ <span class="en">is_published</span> + آپلود فایل مرتبط. فرم‌ها با اعتبارسنجی سمت سرور (server actions). ویرایش markdown مقاله: textarea ساده + پیش‌نمایش side-by-side؛ WYSIWYG نساز.
+   دسترسی: فقط role=admin (مثل فعلی). آپلود ویدئوی بزرگ در dev عادی است؛ timeout Next را نگران نکن.
+
+۵) seed نمونه (حداقلی، طبق تصمیم کارفرما)
+   اسکریپت تولید فایل: صوت = WAV تون ۲-۳ ثانیه‌ای با نویز ملایم (چند فایل)؛ تصویر = SVG/PNG placeholder با نام آلبوم/شخص (چند فایل)؛ ویدئو = رکورد DB با asset فاقد فایل تا بازیکن حالت «فایل موجود نیست» را graceful نشان دهد (کارفرما بعداً فایل واقعی می‌گذارد؛ در گزارش بنویس چطور جایگزین کند).
+   مقادیر فارسی نمونه: ۲ دسته، ۴ برچسب، ۴ صوت (راوی/مناسبت مختلف)، ۲ آلبوم + ۶ عکس، ۲ شخص (یک متوفی با معرفی‌نامه نمونه)، ۲ ویدئو، ۳ برنامه (پیش‌رو/گذشته/لغوشده)، ۲ مقاله کوتاه مذهبی با markdown واقعی (تیتر/لیست/بولد/نقل‌قول). همه is_published=true به‌جز ۱ مقاله پیش‌نویس تا سوییچ را نشان دهیم.
+
+۶) تست و تحویل
+   • <span class="en">scripts/e2e-stage02.mjs</span (puppeteer، همان الگوی مرحله ۱): خانه با کارت واقعی، لیست/پخش صوت، فیلتر مناسبت، صفحه مقاله با تایپوگرافی و تصویر، lightbox آلبوم، صفحه شخص متوفی، برنامه پیش‌رو نسبت به امروز شمسی، ساخت مقاله+آپلود تصویر از پنل و مشاهده در عمومی، unpublish، حذف، تست ۲۰۶ Range روی یک فایل صوت، تست path traversal (درخواست مسیر دلخواه به /api/files باید ۴xx بگیرد)، صفر console error.
+   • رگرسیون: اجرای کامل <span class="en">e2e-stage01.mjs</span> و e2e-limits بدون fail. <span class="en">tsc --noEmit</span> و <span class="en">npm run build</span> تمیز.
+   • اسکرین‌شات‌ها در <span class="en">reports/assets/stage-02/</span> (حداقل: خانه، صوت، مقاله، آلبوم اشخاص، پنل محتوا).
+   • گزارش <b>reports/stage-02.md</b>: فایل‌ها، نحوه اجرا، انحراف‌ها با دلیل، «سوالات» و سپس توقف. پورت ۳۲۱۰.
+
+۷) محدودیت‌های سخت (بدون تغییر)
+   • هیچ خرید/سرویس پولی، هیچ deploy. پشته ثابت (Next 15/Tailwind/Drizzle/node:sqlite shim).
+   • پکیج جدید فقط در صورت ضرورت با پرسیدن در «سوالات»؛ فعلاً هیچ‌کدام لازم نیست.
+   • فایل‌های مرجع فقط خواندنی: Spec/Prompt‌های HTML، Plan.html، draw.html، plan.dxf، plan.JPG.
+   • دست‌نزدن به منطق auth/جداول مرحله ۱ (به‌جز افزودن فیلد در صورت ضرورت با ذکر در گزارش) و نساختن هر چیزی از مراحل ۳ تا ۵.</div>
+</section>
+
+<section>
+<h2>ج. چک‌لیست پذیرش مرحله ۲ (سنجش من پس از دریافت گزارش)</h2>
+<ol>
+  <li>خانه بدون هیچ چیپ «به‌زودی» برای صوت/تصویر/ویدئو/برنامه/مقالات؛ فقط مهمانسرا و نذورات placeholder بمانند.</li>
+  <li>پخش یک فایل صوتی نمونه از UI و دریافت پاسخ ۲۰۶ Range در شبکه.</li>
+  <li>مسیر <code>/api/files/../../etc</code> → ۴xx (ثبت در گزارش).</li>
+  <li>مقاله نمونه با markdown رندرشده، RTL تمیز و متادیتای OG در view-source.</li>
+  <li>چرخه کامل پنل: ساخت → انتشار → نمایش در عمومی → unpublish → حذف (اگر تست e2e پوشش داد).</li>
+  <li>آلبوم اشخاص: صفحه فرد متوفی با bio و عکس.</li>
+  <li>رگرسیون مرحله ۱ سبز + build تمیز.</li>
+</ol>
+<div class="box warn"><b>یادآوری به کارفرما:</b> برای مرحله ۳ (رزرو + مالی) به دو چیز نیاز دارید: لیست «تیپ → ظرفیت → نرخ شب» و (سخت) تصمیم درگاه — تا کلید تست درگاه نگیرید، رزرو با درگاه شبیه‌ساز ساخته و تست می‌شود؛ اتصال واقعی در مرحله ۵.</div>
+</section>
+
+<section>
+<h2>تک‌جمله ارجاع</h2>
+<div class="copy">«فایل Prompt_02_Stage2.html را در ریشه‌ی E:\APPs\AbolHasan باز کن، اول reports/replies.md را بخوان، سپس فقط بخش «پرامپت مرحله ۲» را اجرا کن و گزارش را در reports/stage-02.md بنویس و منتظر تأیید من بمان.»</div>
+</section>
+
+</div>
+</body>
+</html>

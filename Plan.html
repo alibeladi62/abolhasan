@@ -1,0 +1,104 @@
+
+
+
+
+<meta charset="UTF-8">
+<title>نقشه تعاملی نهایی</title>
+<style>
+    body, html { margin: 0; padding: 0; height: 100%; background: #111; overflow: hidden; font-family: Tahoma; }
+    #viewport { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; cursor: grab; overflow: hidden; }
+    #viewport.grabbing { cursor: grabbing; }
+    #map-wrapper { position: relative; transform-origin: center; }
+    img { max-width: 100vw; max-height: 100vh; display: block; pointer-events: none; }
+    svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; }
+    
+    .unit-poly { fill: rgba(255, 215, 0, 0.05); stroke: #ffd700; stroke-width: 2; transition: all 0.2s; cursor: pointer; pointer-events: all; }
+    .unit-poly:hover { fill: rgba(255, 215, 0, 0.3); stroke-width: 3; }
+    .unit-poly.active { fill: rgba(255, 215, 0, 0.5); stroke-width: 4; filter: drop-shadow(0 0 8px #ffd700); }
+
+    .ui-panel { position: fixed; top: 20px; left: 20px; background: rgba(20, 20, 20, 0.9); color: #fff; padding: 15px; border-radius: 8px; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid #333; }
+    .ui-panel h3 { margin: 0 0 10px 0; color: #ffd700; border-bottom: 1px solid #444; padding-bottom: 5px; }
+    .ui-panel p { margin: 5px 0; font-size: 14px; color: #ccc; }
+    
+    #controls { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 10; }
+    button { background: #222; color: #fff; border: 1px solid #555; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 18px; }
+    button:hover { background: #ffd700; color: #000; border-color: #ffd700; }
+</style>
+
+
+    <div id="viewport">
+        <div id="map-wrapper">
+            <img src="plan.jpg" alt="نقشه">
+            <svg viewBox="0 0 1058 716">
+      <polygon points="32.666656494140625,40 274.6666564941406,38 272.6666564941406,196 183.66665649414062,199 181.66665649414062,394 35.666656494140625,393" class="unit-poly" data-name="1"></polygon>
+      <polygon points="34.666656494140625,396 183.66665649414062,399 183.66665649414062,702 29.666656494140625,702" class="unit-poly" data-name="2"></polygon>
+      <polygon points="184.66665649414062,442 317.6666564941406,443 315.6666564941406,699 184.66665649414062,701" class="unit-poly" data-name="3"></polygon>
+      <polygon points="318.6666564941406,442 547.6666564941406,441 542.6666564941406,700 316.6666564941406,702" class="unit-poly" data-name="4"></polygon>
+      <polygon points="549.6666564941406,440 674.6666564941406,441 671.6666564941406,701 545.6666564941406,702" class="unit-poly" data-name="5"></polygon>
+      <polygon points="675.6666564941406,439 829.6666564941406,442 827.6666564941406,701 673.6666564941406,701" class="unit-poly" data-name="6"></polygon>
+      <polygon points="831.6666564941406,442 1015.6666564941406,442 996.6666564941406,702 828.6666564941406,703" class="unit-poly" data-name="7"></polygon>
+      <polygon points="802.6666564941406,279 799.6666564941406,16 1052.6666564941406,7 1034.6666564941406,196 877.6666564941406,191 880.6666564941406,282" class="unit-poly" data-name="8"></polygon>
+      <polygon points="796.6666564941406,17 668.6666564941406,19 668.6666564941406,355 803.6666564941406,354" class="unit-poly" data-name="9"></polygon>
+      <polygon points="666.6666564941406,19 503.6666564941406,26 504.6666564941406,356 667.6666564941406,356" class="unit-poly" data-name="10"></polygon>
+      <polygon points="501.6666564941406,27 276.6666564941406,36 275.6666564941406,196 379.6666564941406,194 379.6666564941406,355 499.6666564941406,354" class="unit-poly" data-name="11"></polygon>
+
+            </svg>
+        </div>
+    </div>
+
+    <div class="ui-panel">
+        <h3 id="unit-title">نقشه کلی</h3>
+        <p>روی هر بخش کلیک کنید تا انتخاب شود.</p>
+    </div>
+
+    <div id="controls">
+        <button onclick="zoomIn()">➕</button>
+        <button onclick="zoomOut()">➖</button>
+        <button onclick="resetView()">⟲</button>
+    </div>
+
+    <script>
+        const viewport = document.getElementById('viewport');
+        const wrapper = document.getElementById('map-wrapper');
+        const title = document.getElementById('unit-title');
+        let scale = 1, panX = 0, panY = 0, isDragging = false, startX, startY;
+
+        function applyTransform() { wrapper.style.transform = 'translate(' + panX + 'px, ' + panY + 'px) scale(' + scale + ')'; }
+        function zoomIn() { scale = Math.min(scale * 1.2, 6); applyTransform(); }
+        function zoomOut() { scale = Math.max(scale / 1.2, 0.3); applyTransform(); }
+        function resetView() { scale = 1; panX = 0; panY = 0; applyTransform(); }
+
+        viewport.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (e.deltaY < 0) scale = Math.min(scale * 1.1, 6);
+            else scale = Math.max(scale / 1.1, 0.3);
+            applyTransform();
+        }, { passive: false });
+
+        viewport.addEventListener('mousedown', (e) => {
+            if (e.target.tagName.toLowerCase() === 'polygon') return;
+            isDragging = true; startX = e.clientX - panX; startY = e.clientY - panY;
+            viewport.classList.add('grabbing');
+        });
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            panX = e.clientX - startX; panY = e.clientY - startY;
+            applyTransform();
+        });
+        window.addEventListener('mouseup', () => {
+            isDragging = false; viewport.classList.remove('grabbing');
+        });
+
+        document.querySelectorAll('.unit-poly').forEach(poly => {
+            poly.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.unit-poly').forEach(p => p.classList.remove('active'));
+                poly.classList.add('active');
+                title.textContent = poly.getAttribute('data-name');
+                title.style.color = '#ffd700';
+            });
+        });
+    </script>
+
+
+    

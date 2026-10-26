@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>ابزار رسم پلیگون واحدها</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; background: #222; overflow: hidden; font-family: Tahoma; }
+        #container { position: relative; width: 100vw; height: 100vh; overflow: auto; background: #333; text-align: center; }
+        #image-wrapper { position: relative; display: inline-block; margin-top: 60px; }
+        img { max-width: 100%; display: block; user-select: none; pointer-events: none; }
+        
+        svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair; }
+        
+        .polygon { fill: rgba(255, 215, 0, 0.2); stroke: #ffd700; stroke-width: 2; transition: 0.2s; cursor: pointer; }
+        .polygon:hover { fill: rgba(255, 215, 0, 0.4); stroke-width: 3; }
+        
+        .ui-panel { position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.9); color: #fff; padding: 15px; border-radius: 8px; z-index: 10; display: flex; flex-direction: column; gap: 10px; border: 1px solid #444; }
+        .ui-panel input { padding: 8px; border-radius: 4px; border: 1px solid #555; background: #222; color: #fff; }
+        .ui-panel button { padding: 8px 15px; background: #ffd700; color: #000; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .ui-panel button:hover { background: #ffea00; }
+        .ui-panel button:disabled { background: #555; color: #888; cursor: not-allowed; }
+        
+        #export-area { display: none; position: fixed; top: 5%; left: 5%; width: 90%; height: 90%; background: #111; color: #0f0; padding: 20px; z-index: 100; border: 2px solid #0f0; border-radius: 8px; flex-direction: column; box-sizing: border-box; }
+        #export-area textarea { flex: 1; width: 100%; margin-bottom: 10px; font-family: monospace; background: #000; color: #fff; border: 1px solid #333; padding: 10px; resize: none; }
+        
+        .help { font-size: 12px; color: #aaa; line-height: 1.6; max-width: 250px; }
+    </style>
+</head>
+<body>
+
+    <div class="ui-panel">
+        <div><strong>وضعیت:</strong> <span id="status" style="color:#0f0;">آماده رسم</span></div>
+        <input type="text" id="unit-name" placeholder="نام واحد (مثلا سوئیت 1)">
+        <button id="finish-btn" onclick="finishPolygon()" disabled>پایان رسم این واحد</button>
+        <div class="help">
+            • روی گوشه‌های اتاق کلیک کنید تا پلیگون کشیده شود.<br>
+            • برای بستن، مجدداً روی نقطه اول کلیک کنید.<br>
+            • سپس نام واحد را وارد و ثبت کنید.
+        </div>
+        <button onclick="showExport()" style="margin-top: 20px; background: #00ffcc;">تولید کد نهایی (HTML)</button>
+    </div>
+
+    <div id="container">
+        <div id="image-wrapper">
+            <img id="plan-img" src="plan.jpg" alt="پلان" onerror="this.src='https://via.placeholder.com/1000x700/333/fff?text=plan.jpg+not+found'">
+            <svg id="draw-svg"></svg>
+        </div>
+    </div>
+
+    <div id="export-area">
+        <h3>کد نهایی را کپی کرده و در فایل final.html ذخیره کنید:</h3>
+        <textarea id="export-code" readonly></textarea>
+        <button onclick="document.getElementById('export-area').style.display='none'" style="padding:10px; background:#f00; color:#fff; border:none; border-radius:4px; cursor:pointer;">بستن</button>
+    </div>
+
+    <script>
+        const svg = document.getElementById('draw-svg');
+        const img = document.getElementById('plan-img');
+        const status = document.getElementById('status');
+        const unitNameInput = document.getElementById('unit-name');
+        const finishBtn = document.getElementById('finish-btn');
+
+        let isDrawing = false;
+        let currentPoints = [];
+        let currentPolygon = null;
+        let allPolygons = [];
+
+        img.onload = () => {
+            svg.style.width = img.width + 'px';
+            svg.style.height = img.height + 'px';
+            svg.setAttribute('viewBox', '0 0 ' + img.width + ' ' + img.height);
+        };
+
+        svg.addEventListener('click', (e) => {
+            if (e.target.closest('.ui-panel')) return;
+            
+            const rect = svg.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (img.width / rect.width);
+            const y = (e.clientY - rect.top) * (img.height / rect.height);
+
+            // بستن پلیگون با کلیک روی نقطه اول
+            if (isDrawing && currentPoints.length > 2) {
+                const firstPt = currentPoints[0].split(',');
+                const dist = Math.hypot(x - firstPt[0], y - firstPt[1]);
+                if (dist < 20) {
+                    finishBtn.disabled = false;
+                    status.textContent = 'منتظر ثبت نام...';
+                    return;
+                }
+            }
+
+            if (!isDrawing) {
+                isDrawing = true;
+                currentPoints = [x + ',' + y];
+                currentPolygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                currentPolygon.setAttribute('class', 'polygon');
+                svg.appendChild(currentPolygon);
+                status.textContent = 'در حال رسم...';
+            } else {
+                currentPoints.push(x + ',' + y);
+                currentPolygon.setAttribute('points', currentPoints.join(' '));
+            }
+        });
+
+        function finishPolygon() {
+            const name = unitNameInput.value.trim();
+            if (!name) {
+                alert('لطفاً یک نام برای واحد وارد کنید.');
+                return;
+            }
+            
+            allPolygons.push({
+                name: name,
+                points: currentPoints.join(' ')
+            });
+
+            isDrawing = false;
+            currentPoints = [];
+            currentPolygon = null;
+            unitNameInput.value = '';
+            finishBtn.disabled = true;
+            status.textContent = 'ثبت شد! آماده واحد بعدی.';
+        }
+
+        function showExport() {
+            if (allPolygons.length === 0) {
+                alert('هنوز هیچ واحدی رسم نکرده‌اید!');
+                return;
+            }
+
+            let polygonsHtml = '';
+            allPolygons.forEach(p => {
+                polygonsHtml += '      <polygon points="' + p.points + '" class="unit-poly" data-name="' + p.name + '"></polygon>\n';
+            });
+
+            // استفاده از Template در HTML برای جلوگیری از خطای سینتکس
+            const template = document.getElementById('final-template').innerHTML;
+            
+            let finalCode = template
+                .replace(/IMG_WIDTH/g, img.width)
+                .replace(/IMG_HEIGHT/g, img.height)
+                .replace('POLYGONS_PLACEHOLDER', polygonsHtml);
+
+            document.getElementById('export-code').value = finalCode;
+            document.getElementById('export-area').style.display = 'flex';
+        }
+    </script>
+
+    <!-- قالب کد نهایی (پنهان) -->
+    <template id="final-template">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>نقشه تعاملی نهایی</title>
+<style>
+    body, html { margin: 0; padding: 0; height: 100%; background: #111; overflow: hidden; font-family: Tahoma; }
+    #viewport { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; cursor: grab; overflow: hidden; }
+    #viewport.grabbing { cursor: grabbing; }
+    #map-wrapper { position: relative; transform-origin: center; }
+    img { max-width: 100vw; max-height: 100vh; display: block; pointer-events: none; }
+    svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; }
+    
+    .unit-poly { fill: rgba(255, 215, 0, 0.05); stroke: #ffd700; stroke-width: 2; transition: all 0.2s; cursor: pointer; pointer-events: all; }
+    .unit-poly:hover { fill: rgba(255, 215, 0, 0.3); stroke-width: 3; }
+    .unit-poly.active { fill: rgba(255, 215, 0, 0.5); stroke-width: 4; filter: drop-shadow(0 0 8px #ffd700); }
+
+    .ui-panel { position: fixed; top: 20px; left: 20px; background: rgba(20, 20, 20, 0.9); color: #fff; padding: 15px; border-radius: 8px; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 1px solid #333; }
+    .ui-panel h3 { margin: 0 0 10px 0; color: #ffd700; border-bottom: 1px solid #444; padding-bottom: 5px; }
+    .ui-panel p { margin: 5px 0; font-size: 14px; color: #ccc; }
+    
+    #controls { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; z-index: 10; }
+    button { background: #222; color: #fff; border: 1px solid #555; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 18px; }
+    button:hover { background: #ffd700; color: #000; border-color: #ffd700; }
+</style>
+</head>
+<body>
+    <div id="viewport">
+        <div id="map-wrapper">
+            <img src="plan.jpg" alt="نقشه">
+            <svg viewBox="0 0 IMG_WIDTH IMG_HEIGHT">
+POLYGONS_PLACEHOLDER
+            </svg>
+        </div>
+    </div>
+
+    <div class="ui-panel">
+        <h3 id="unit-title">نقشه کلی</h3>
+        <p>روی هر بخش کلیک کنید تا انتخاب شود.</p>
+    </div>
+
+    <div id="controls">
+        <button onclick="zoomIn()">➕</button>
+        <button onclick="zoomOut()">➖</button>
+        <button onclick="resetView()">⟲</button>
+    </div>
+
+    <script>
+        const viewport = document.getElementById('viewport');
+        const wrapper = document.getElementById('map-wrapper');
+        const title = document.getElementById('unit-title');
+        let scale = 1, panX = 0, panY = 0, isDragging = false, startX, startY;
+
+        function applyTransform() { wrapper.style.transform = 'translate(' + panX + 'px, ' + panY + 'px) scale(' + scale + ')'; }
+        function zoomIn() { scale = Math.min(scale * 1.2, 6); applyTransform(); }
+        function zoomOut() { scale = Math.max(scale / 1.2, 0.3); applyTransform(); }
+        function resetView() { scale = 1; panX = 0; panY = 0; applyTransform(); }
+
+        viewport.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (e.deltaY < 0) scale = Math.min(scale * 1.1, 6);
+            else scale = Math.max(scale / 1.1, 0.3);
+            applyTransform();
+        }, { passive: false });
+
+        viewport.addEventListener('mousedown', (e) => {
+            if (e.target.tagName.toLowerCase() === 'polygon') return;
+            isDragging = true; startX = e.clientX - panX; startY = e.clientY - panY;
+            viewport.classList.add('grabbing');
+        });
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            panX = e.clientX - startX; panY = e.clientY - startY;
+            applyTransform();
+        });
+        window.addEventListener('mouseup', () => {
+            isDragging = false; viewport.classList.remove('grabbing');
+        });
+
+        document.querySelectorAll('.unit-poly').forEach(poly => {
+            poly.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.unit-poly').forEach(p => p.classList.remove('active'));
+                poly.classList.add('active');
+                title.textContent = poly.getAttribute('data-name');
+                title.style.color = '#ffd700';
+            });
+        });
+    </script>
+</body>
+</html>
+    </template>
+</body>
+</html>
